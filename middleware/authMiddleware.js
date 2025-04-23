@@ -4,7 +4,6 @@ import { userModel } from "../model/userModel.js";
 const authentication = async (req, res, next) => {
   try {
     const token = req.cookies.jwt || req.headers["authorization"];
-    console.log("token :>> ", token);
     if (!token) {
       return res
         .status(401)
