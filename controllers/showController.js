@@ -5,7 +5,9 @@ const getBookedShows = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
 
-    const user = await userModel.findById(loggedInUserId).populate('booked_shows');
+    const user = await userModel
+      .findById(loggedInUserId)
+      .populate("booked_shows");
     if (!user) {
       return res
         .status(404)
@@ -23,7 +25,7 @@ const getBookedShows = async (req, res) => {
 
 const getAllShows = async (req, res) => {
   try {
-    const shows = await showModal.find()
+    const shows = await showModal.find();
     res.status(200).send({
       message: "Shows fetched Successfully",
       data: shows,
@@ -36,8 +38,8 @@ const getAllShows = async (req, res) => {
 
 const getShowById = async (req, res) => {
   try {
-    const {id} = req.params
-    const show = await showModal.findById(id)
+    const { id } = req.params;
+    const show = await showModal.findById(id);
     res.status(200).send({
       message: "Show fetched Successfully",
       data: show,
@@ -50,9 +52,13 @@ const getShowById = async (req, res) => {
 
 const bookTicket = async (req, res) => {
   try {
-    const {id} = req.body
-    const user_id = req.user._id
-    const user = await userModel.findOneAndUpdate({_id: user_id, },  { $addToSet: { booked_shows: id } } ,{new: true})
+    const { id } = req.body;
+    const user_id = req.user._id;
+    const user = await userModel.findOneAndUpdate(
+      { _id: user_id },
+      { $addToSet: { booked_shows: id } },
+      { new: true }
+    );
     res.status(200).send({
       message: "Show fetched Successfully",
       data: user,
@@ -65,14 +71,19 @@ const bookTicket = async (req, res) => {
 
 const allBookedTickets = async (req, res) => {
   try {
-    const usersWithTickets = await userModel.find({
+    const usersWithTickets = await userModel
+      .find({
+        booked_shows: { $exists: true, $not: { $size: 0 } },
+      })
+      .populate("booked_shows");
+    const totalUsersWithTickets = await userModel.countDocuments({
       booked_shows: { $exists: true, $not: { $size: 0 } },
-    }).populate("booked_shows");
-
+    });
     res.status(200).send({
       success: true,
       message: "Fetched all booked tickets with user details",
       data: usersWithTickets,
+      count: totalUsersWithTickets,
     });
   } catch (error) {
     console.error("Error fetching booked tickets:", error);
@@ -80,4 +91,10 @@ const allBookedTickets = async (req, res) => {
   }
 };
 
-export { getAllShows, getBookedShows, getShowById, bookTicket, allBookedTickets };
+export {
+  getAllShows,
+  getBookedShows,
+  getShowById,
+  bookTicket,
+  allBookedTickets,
+};

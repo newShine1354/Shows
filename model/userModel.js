@@ -29,8 +29,8 @@ const UserSchema = new Schema(
     },
     booked_shows: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "Show"
-    }
+      ref: "Show",
+    },
   },
   {
     timestamps: true,
@@ -38,4 +38,3 @@ const UserSchema = new Schema(
 );
 
 export const userModel = model("User", UserSchema);
-

@@ -1,5 +1,4 @@
-import  { Schema, model } from "mongoose";
-
+import { Schema, model } from "mongoose";
 
 const ShowSchema = new Schema({
   id: Number,
@@ -16,10 +15,10 @@ const ShowSchema = new Schema({
   officialSite: String,
   schedule: {
     time: String,
-    days: [String]
+    days: [String],
   },
   rating: {
-    average: Number
+    average: Number,
   },
   weight: Number,
   network: {
@@ -28,38 +27,38 @@ const ShowSchema = new Schema({
     country: {
       name: String,
       code: String,
-      timezone: String
+      timezone: String,
     },
-    officialSite: String
+    officialSite: String,
   },
   webChannel: {
     type: Schema.Types.Mixed,
-    default: null
+    default: null,
   },
   dvdCountry: {
     type: Schema.Types.Mixed,
-    default: null
+    default: null,
   },
   externals: {
     tvrage: Number,
     thetvdb: Number,
-    imdb: String
+    imdb: String,
   },
   image: {
     medium: String,
-    original: String
+    original: String,
   },
   summary: String,
   updated: Number,
   _links: {
     self: {
-      href: String
+      href: String,
     },
     previousepisode: {
       href: String,
-      name: String
-    }
-  }
+      name: String,
+    },
+  },
 });
 
-export const showModal = model('Show', ShowSchema);
+export const showModal = model("Show", ShowSchema);

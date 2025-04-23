@@ -4,6 +4,7 @@ import { userModel } from "../model/userModel.js";
 const authentication = async (req, res, next) => {
   try {
     const token = req.cookies.jwt || req.headers["authorization"];
+    console.log("token :>> ", token);
     if (!token) {
       return res
         .status(401)
@@ -23,4 +24,18 @@ const authentication = async (req, res, next) => {
   }
 };
 
-export { authentication };
+const authorization = async (req, res, next) => {
+  try {
+    const user = req.user;
+    if (user.role !== "ADMIN") {
+      return res
+        .status(403)
+        .send({ message: "Permission denied", success: false });
+    }
+    next();
+  } catch (error) {
+    res.status(500).send({ message: error?.message || "", success: false });
+  }
+};
+
+export { authentication, authorization };
